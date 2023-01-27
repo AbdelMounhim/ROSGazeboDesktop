@@ -14,11 +14,11 @@ RUN apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E
 
 # Install ROS Melodic
 RUN apt update
-RUN apt-get install -y ros-melodic-desktop-full
+RUN apt-get install -y ros-melodic-desktop-full python3.7 python-rosdep 
 RUN rosdep init && rosdep update
 
 # Install some essentials
-RUN apt-get install -y git wget curl nano mercurial python-pip
+RUN apt-get install -y git wget curl nano mercurial python3-pip
 RUN apt-get install -y python-rosinstall python-rosinstall-generator python-wstool build-essential
 
 # Setup the shell
@@ -31,9 +31,8 @@ RUN /bin/bash -c "source /home/ubuntu/.bashrc"
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
 RUN install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
 RUN sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
-RUN apt-get install -y apt-transport-https
-RUN apt-get update
-RUN apt-get install -y code
+RUN apt-get install -y apt-transport-https && apt-get update && apt-get install -y code
+RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && python3.7 get-pip.py && rm get-pip.py
 RUN pip install pylint
 
 # Install Catkin
